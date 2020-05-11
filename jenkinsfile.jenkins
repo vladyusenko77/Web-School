@@ -65,12 +65,12 @@ pipeline  {
                docker run -d --restart=always --name scholl078 -p 80:3000 kosmos666/scholl078
                '''
            }
-        }
-         stage("Deploy to stage server") {
-            steps {
-                echo " ============== Running playbook =================="
-                sh '''
-                ansible-playbook toolbox/ansible/playbooks/demloyToStageServer.yml
-                '''
-            }
-    }
+        //}
+        // stage("Deploy to stage server") {
+        //    steps {
+        //        echo " ============== Running playbook =================="
+        //        sh '''
+        //        ansible-playbook toolbox/ansible/playbooks/demloyToStageServer.yml
+        //        '''
+        //    }
+    //}
