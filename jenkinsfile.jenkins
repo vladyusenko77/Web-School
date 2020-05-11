@@ -1,0 +1,76 @@
+properties([disableConcurrentBuilds()])
+pipeline  {
+    agent { 
+        label 'UI'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("Create docker image") {
+            steps {
+                echo 'Creating docker image ...'
+                dir('.'){
+                    sh "docker build -t yusenko/scholl078 . "
+                }
+            }
+        }
+        stage("docker login") {
+           steps {
+               echo " ============== docker login =================="
+               withCredentials([usernamePassword(credentialsId: 'DockerHub-Credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                   sh '''
+                   docker login -u $USERNAME -p $PASSWORD
+                   '''
+               }
+           }
+        }
+        stage("docker push") {
+           steps {
+               echo " ============== pushing image =================="
+               sh '''
+               docker push yusenko/scholl078:latest
+               '''
+           }
+        }
+        stage("docker stop") {
+           steps {
+               echo " ============== stoping all containers =================="
+               sh '''
+               docker stop scholl078
+               '''
+           }
+        } 
+        stage("docker remove") {
+           steps {
+               echo " ============== removing all docker containers =================="
+               sh '''
+               docker rm scholl078
+               '''
+           }
+        } 
+        stage("docker remove images") {
+           steps {
+               echo " ============== removing all docker images =================="
+               sh '''
+               docker rmi $(docker images -q)
+               '''
+           }
+        }
+        stage("docker run") {
+           steps {
+               echo " ============== starting chatterbox =================="
+               sh '''
+               docker run -d --restart=always --name telebot_remote  yusenko/scholl078
+               '''
+           }
+        }
+         stage("Deploy to stage server") {
+            steps {
+                echo " ============== Running playbook =================="
+                sh '''
+                ansible-playbook toolbox/ansible/playbooks/demloyToStageServer.yml
+                '''
+            }
+        }
