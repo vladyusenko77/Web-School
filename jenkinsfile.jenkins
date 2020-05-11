@@ -1,6 +1,7 @@
 #!groovy
 //  groovy Jenkinsfile
 
+
 properties([disableConcurrentBuilds()])
 pipeline  {
     agent { 
@@ -15,7 +16,7 @@ pipeline  {
             steps {
                 echo 'Creating docker image ...'
                 dir('.'){
-                    sh "docker build -t yusenko/scholl078 . "
+                    sh "docker build -t yusenko/yusenko . "
                 }
             }
         }
@@ -33,7 +34,7 @@ pipeline  {
            steps {
                echo " ============== pushing image =================="
                sh '''
-               docker push yusenko/scholl078:latest
+               docker push yusenko/yusenko:latest
                '''
            }
         }
@@ -41,7 +42,7 @@ pipeline  {
            steps {
                echo " ============== stoping all containers =================="
                sh '''
-               docker stop scholl078
+               docker stop yusenko
                '''
            }
         } 
@@ -49,7 +50,7 @@ pipeline  {
            steps {
                echo " ============== removing all docker containers =================="
                sh '''
-               docker rm scholl078
+               docker rm yusenko
                '''
            }
         } 
@@ -65,15 +66,18 @@ pipeline  {
            steps {
                echo " ============== starting chatterbox =================="
                sh '''
-               docker run -d --restart=always --name scholl078 -p 80:3000 yusenko/scholl078
+               docker run -d --restart=always --name yusenko -p 80:3000 yusenko/wyusenko
                '''
            }
-        //}
+        }
         // stage("Deploy to stage server") {
-        //    steps {
-        //        echo " ============== Running playbook =================="
-        //        sh '''
-        //        ansible-playbook toolbox/ansible/playbooks/demloyToStageServer.yml
-        //        '''
-        //    }
-    //}
+        //     steps {
+        //         echo " ============== Running playbook =================="
+        //         sh '''
+        //         ansible-playbook toolbox/ansible/playbooks/demloyToStageServer.yml
+        //         '''
+        //     }
+        //}
+
+    }
+}
