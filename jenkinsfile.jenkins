@@ -1,7 +1,7 @@
 properties([disableConcurrentBuilds()])
 pipeline  {
     agent { 
-        label 'UI'
+        label 'master'
         }
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
@@ -62,7 +62,7 @@ pipeline  {
            steps {
                echo " ============== starting chatterbox =================="
                sh '''
-               docker run -d --restart=always --name scholl078 -p 80:3000 kosmos666/scholl078
+               docker run -d --restart=always --name scholl078 -p 80:3000 yusenko/scholl078
                '''
            }
         //}
