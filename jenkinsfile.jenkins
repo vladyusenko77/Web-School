@@ -62,7 +62,7 @@ pipeline  {
            steps {
                echo " ============== starting chatterbox =================="
                sh '''
-               docker run -d --restart=always --name telebot_remote  yusenko/scholl078
+               docker run -d --restart=always --name scholl078 -p 80:3000 kosmos666/scholl078
                '''
            }
         }

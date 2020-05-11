@@ -1,5 +1,5 @@
 FROM node
 WORKDIR /usr/src/app
 COPY . /usr/src/app
-RUN npm install 
+RUN npm install && npm install gulp -g
 CMD [ "node", "./gulp" ]
