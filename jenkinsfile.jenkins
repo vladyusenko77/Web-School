@@ -53,23 +53,23 @@ pipeline  {
                docker rm scholl
                '''
            }
-        stage("docker run") {
+        } 
+        stage("docker remove images") {
            steps {
-               echo " ============== starting chatterbox =================="
+               echo " ============== removing all docker images =================="
                sh '''
-               docker run -d --restart=always --name scholl -p 80:3000 yusenko/scholl
+               docker rmi $(docker images -q)
                '''
            }
         }
-        // } 
-        // stage("docker remove images") {
-        //    steps {
-        //        echo " ============== removing all docker images =================="
-        //        sh '''
-        //        docker rmi $(docker images -q)
-        //        '''
-        //    }
-        // }
+        stage("docker run") {
+            steps {
+                echo " ============== starting chatterbox =================="
+                sh '''
+                docker run -d --restart=always --name scholl -p 80:3000 yusenko/scholl
+                '''
+            }
+        }
         // stage("Deploy to stage server") {
         //     steps {
         //         echo " ============== Running playbook =================="
