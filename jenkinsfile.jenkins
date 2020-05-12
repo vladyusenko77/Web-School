@@ -16,7 +16,7 @@ pipeline  {
             steps {
                 echo 'Creating docker image ...'
                 dir('.'){
-                    sh "docker build -t yusenko/yusenko . "
+                    sh "docker build -t yusenko/scholl . "
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline  {
            steps {
                echo " ============== pushing image =================="
                sh '''
-               docker push yusenko/yusenko:latest
+               docker push yusenko/scholl:latest
                '''
            }
         }
@@ -42,7 +42,7 @@ pipeline  {
            steps {
                echo " ============== stoping all containers =================="
                sh '''
-               docker stop yusenko
+               docker stop scholl
                '''
            }
         } 
@@ -50,7 +50,7 @@ pipeline  {
            steps {
                echo " ============== removing all docker containers =================="
                sh '''
-               docker rm yusenko
+               docker rm scholl
                '''
            }
         } 
@@ -66,7 +66,7 @@ pipeline  {
            steps {
                echo " ============== starting chatterbox =================="
                sh '''
-               docker run -d --restart=always --name yusenko -p 80:3000 yusenko/wyusenko
+               docker run -d --restart=always --name scholl -p 80:3000 yusenko/scholl
                '''
            }
         }
