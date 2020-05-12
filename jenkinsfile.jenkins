@@ -53,15 +53,15 @@ pipeline  {
                docker rm scholl
                '''
            }
-        // } 
-        // stage("docker remove images") {
-        //    steps {
-        //        echo " ============== removing all docker images =================="
-        //        sh '''
-        //        docker rmi $(docker images -q)
-        //        '''
-        //    }
-        // }
+        } 
+        stage("docker remove images") {
+           steps {
+               echo " ============== removing all docker images =================="
+               sh '''
+               docker rmi $(docker images -q)
+               '''
+           }
+        }
         stage("docker run") {
             steps {
                 echo " ============== starting chatterbox =================="
